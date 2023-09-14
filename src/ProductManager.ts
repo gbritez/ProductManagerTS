@@ -31,12 +31,11 @@ export class ProductManager {
             product.id = 1;
         }
 
-        const isValid = await this.ValidateProduct(product)
-        if (isValid) {
-            products = [...products, product]
-            await fs.promises.writeFile(this.path, JSON.stringify(products))
-            console.log('Product added successfully.')
-        }
+        await this.ValidateProduct(product)
+
+        products = [...products, product]
+        await fs.promises.writeFile(this.path, JSON.stringify(products))
+
     }
     async GetProducts() {
         let db = await fs.promises.readFile(this.path, 'utf-8');
@@ -45,31 +44,22 @@ export class ProductManager {
         if (db) {
             products = JSON.parse(db)
         }
-
         return products || [];
     }
     async GetProductById(id: number) {
         const products = await this.GetProducts();
         let product: Product;
-        try {
-            product = products.find(x => x.id === id);
-            if (product) {
-                return product;
-            }
-            else {
-                console.log('Not found.')
-            }
+        product = products.find(x => x.id === id);
+        if (product) {
+            return product;
         }
-        catch (e) {
-            console.log(e)
+        else {
+            throw new Error(`No product found for id: ${id}`)
         }
     }
     async UpdateProduct(product: Product) {
-        const result: Product = await this.GetProductById(product.id);
-
-        if (!result) {
-            return;
-        }
+        await this.GetProductById(product.id);
+        await this.ValidateProduct(product)
 
         let products = await this.GetProducts();
         products = products.filter(x => x.id !== product.id);
@@ -79,29 +69,28 @@ export class ProductManager {
 
     }
     async DeleteProduct(id: number) {
-        const product = await this.GetProductById(id);
-
-        if (!product) {
-            console.log('Not found.')
-            return;
-        }
+        await this.GetProductById(id);
 
         let products: Product[] = await this.GetProducts()
         products = products.filter(x => x.id !== id);
         await fs.promises.writeFile(this.path, JSON.stringify(products));
-        console.log('Deleted product');
     }
-
     async ValidateProduct(product: Product) {
+        const invalidValues = [null, '', undefined]
+
         const products = await this.GetProducts()
-        if (Object.values(product).includes(null || '' || undefined)) {
-            console.log('Product contains empty values.')
-            return false;
+
+        try {
+            const invalidValuesResult = invalidValues.some(x => Object.values(product).includes(x))
+            if (invalidValuesResult) {
+                throw new Error('Product contains empty values.')
+            }
+            if (products.some(x => x.code === product.code)) {
+                throw new Error('Code duplicated.')
+            }
         }
-        if (products.some(x => x.code === product.code)) {
-            console.log('Code duplicated.')
-            return false;
+        catch (error) {
+            throw new Error(error.message)
         }
-        return true;
     }
 }
