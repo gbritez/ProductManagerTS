@@ -1,0 +1,1 @@
+[{"id":1,"code":1,"description":"test","price":10,"stock":1,"thumbnail":"test","title":"Producto A"}]
