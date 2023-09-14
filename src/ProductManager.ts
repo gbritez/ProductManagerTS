@@ -10,6 +10,27 @@ export interface Product {
     thumbnail: string
 }
 
+const dummyProduct: Product = {
+    id: 1,
+    title: 'dummy',
+    description: 'dummy',
+    price: 1,
+    code: 1,
+    stock: 1,
+    thumbnail: 'dummy'
+}
+
+function IsProduct(obj: any): obj is Product {
+    return (
+        'id' in obj &&
+        'title' in obj &&
+        'description' in obj &&
+        'price' in obj &&
+        'code' in obj &&
+        'stock' in obj &&
+        'thumbnail' in obj
+    );
+}
 export class ProductManager {
     path: string;
 
@@ -37,6 +58,7 @@ export class ProductManager {
         await fs.promises.writeFile(this.path, JSON.stringify(products))
 
     }
+
     async GetProducts() {
         let db = await fs.promises.readFile(this.path, 'utf-8');
         let products: Product[]
@@ -46,6 +68,7 @@ export class ProductManager {
         }
         return products || [];
     }
+
     async GetProductById(id: number) {
         const products = await this.GetProducts();
         let product: Product;
@@ -57,6 +80,7 @@ export class ProductManager {
             throw new Error(`No product found for id: ${id}`)
         }
     }
+
     async UpdateProduct(product: Product) {
         await this.GetProductById(product.id);
         await this.ValidateProduct(product)
@@ -65,9 +89,9 @@ export class ProductManager {
         products = products.filter(x => x.id !== product.id);
         products = [...products, product]
         await fs.promises.writeFile(this.path, JSON.stringify(products))
-        console.log('Updated product');
 
     }
+
     async DeleteProduct(id: number) {
         await this.GetProductById(id);
 
@@ -75,6 +99,7 @@ export class ProductManager {
         products = products.filter(x => x.id !== id);
         await fs.promises.writeFile(this.path, JSON.stringify(products));
     }
+
     async ValidateProduct(product: Product) {
         const invalidValues = [null, '', undefined]
 
@@ -85,12 +110,18 @@ export class ProductManager {
             if (invalidValuesResult) {
                 throw new Error('Product contains empty values.')
             }
-            if (products.some(x => x.code === product.code)) {
-                throw new Error('Code duplicated.')
+            if (!IsProduct(product) || Object.keys(product).length !== Object.keys(dummyProduct).length) {
+                throw new Error('Product has some missing or incorrect properties.')
             }
+            products.forEach(item => {
+                if (item.code === product.code && item.id !== product.id) {
+                    throw new Error('Code duplicated.')
+                }
+            })
         }
         catch (error) {
             throw new Error(error.message)
         }
     }
+
 }

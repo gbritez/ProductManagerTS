@@ -8,7 +8,7 @@ app.use(express.json())
 const manager = new ProductManager('database.txt');
 
 app.get('/products/:pid', async (req, res) => {
-    const id: number = +req.params.id;
+    const id: number = +req.params.pid;
     try {
         const response = await manager.GetProductById(id);
         res.status(200).json({ response, status: 'success' });
@@ -48,6 +48,17 @@ app.delete('/products/:pid', async (req, res) => {
     try {
         const response = await manager.DeleteProduct(id)
         res.status(201).json({ status: 'success' });
+    }
+    catch (error) {
+        res.status(500).json({ error: error.message, status: 'error' });
+    }
+})
+
+app.put('/products/', async (req, res) => {
+    const product: Product = req.body;
+    try {
+        const response = await manager.UpdateProduct(product)
+        res.status(200).json({ response, status: 'success' })
     }
     catch (error) {
         res.status(500).json({ error: error.message, status: 'error' });
