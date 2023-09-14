@@ -9,7 +9,6 @@ const manager = new ProductManager('database.txt');
 
 app.get('/product-management/products/:id', async (req, res) => {
     const id: number = +req.params.id;
-    console.log(typeof (id))
     const products = await manager.GetProductById(id);
     res.json(products);
 })
@@ -26,7 +25,6 @@ app.post('/product-management/products', async (req, res) => {
 })
 
 app.delete('/product-management/products/:id', async (req, res) => {
-    console.log('hit')
     const id: number = +req.params.id;
     const response = await manager.DeleteProduct(id)
     res.send(response)
