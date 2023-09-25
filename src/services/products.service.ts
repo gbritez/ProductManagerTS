@@ -1,16 +1,7 @@
 import fs from 'fs';
+import { IProduct } from '../models/product.model';
 
-export interface Product {
-    id?: number,
-    title: string,
-    description: string,
-    price: number,
-    code: number,
-    stock: number,
-    thumbnail: string
-}
-
-const dummyProduct: Product = {
+const dummyProduct: IProduct = {
     id: 1,
     title: 'dummy',
     description: 'dummy',
@@ -20,7 +11,7 @@ const dummyProduct: Product = {
     thumbnail: 'dummy'
 }
 
-function IsProduct(obj: any): obj is Product {
+function IsProduct(obj: any): obj is IProduct {
     return (
         'id' in obj &&
         'title' in obj &&
@@ -31,25 +22,23 @@ function IsProduct(obj: any): obj is Product {
         'thumbnail' in obj
     );
 }
-export class ProductManager {
+export class ProductsService {
     path: string;
 
-    constructor(path: string) {
-        this.path = path
-
-        const fileExists = fs.existsSync(path)
+    constructor() {
+        this.path = 'src/productos.json'
+        const fileExists = fs.existsSync(this.path)
         if (!fileExists) {
             fs.writeFileSync(this.path, '')
         }
     }
 
-    async AddProduct(product: Product) {
-        let products: Product[] = await this.GetProducts();
+    async AddProduct(product: IProduct) {
+        product.id = 1;
+        let products: IProduct[] = await this.GetProducts();
+
         if (products.length > 0) {
             product.id = products[products.length - 1].id + 1;
-        }
-        else {
-            product.id = 1;
         }
 
         await this.ValidateProduct(product)
@@ -61,8 +50,7 @@ export class ProductManager {
 
     async GetProducts() {
         let db = await fs.promises.readFile(this.path, 'utf-8');
-        let products: Product[]
-
+        let products: IProduct[]
         if (db) {
             products = JSON.parse(db)
         }
@@ -71,7 +59,7 @@ export class ProductManager {
 
     async GetProductById(id: number) {
         const products = await this.GetProducts();
-        let product: Product;
+        let product: IProduct;
         product = products.find(x => x.id === id);
         if (product) {
             return product;
@@ -81,7 +69,7 @@ export class ProductManager {
         }
     }
 
-    async UpdateProduct(product: Product) {
+    async UpdateProduct(product: IProduct) {
         await this.GetProductById(product.id);
         await this.ValidateProduct(product)
 
@@ -95,12 +83,12 @@ export class ProductManager {
     async DeleteProduct(id: number) {
         await this.GetProductById(id);
 
-        let products: Product[] = await this.GetProducts()
+        let products: IProduct[] = await this.GetProducts()
         products = products.filter(x => x.id !== id);
         await fs.promises.writeFile(this.path, JSON.stringify(products));
     }
 
-    async ValidateProduct(product: Product) {
+    async ValidateProduct(product: IProduct) {
         const invalidValues = [null, '', undefined]
 
         const products = await this.GetProducts()
