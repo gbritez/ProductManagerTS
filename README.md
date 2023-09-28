@@ -4,6 +4,6 @@ Pasos para levantar la API :
 
 npm i 
 
-cd src
+npm run dev
 
-npx nodemon index.ts
+localhost:8080/api-docs para swagger.
