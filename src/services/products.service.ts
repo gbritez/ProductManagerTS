@@ -77,7 +77,6 @@ export class ProductsService {
         products = products.filter(x => x.id !== product.id);
         products = [...products, product]
         await fs.promises.writeFile(this.path, JSON.stringify(products))
-
     }
 
     async DeleteProduct(id: number) {

@@ -16,10 +16,10 @@ export class ProductsController {
             if (limit) {
                 response = response.slice(0, limit as number)
             }
-            res.status(200).json({ response, status: 'success' });
+            res.status(200).send(response)
         }
         catch (error) {
-            res.status(500).json({ error: error.message, status: 'error' });
+            res.status(500).send(error.message)
         }
     }
 
@@ -27,10 +27,10 @@ export class ProductsController {
         const id: number = +req.params.pid;
         try {
             const response = await this.productsService.GetProductById(id);
-            res.status(200).json({ response, status: 'success' });
+            res.status(200).send(response)
         }
         catch (error) {
-            res.status(500).json({ error: error.message, status: 'error' });
+            res.status(500).send(error.message)
         }
     }
 
@@ -38,10 +38,10 @@ export class ProductsController {
         const product: IProduct = req.body;
         try {
             const response = await this.productsService.AddProduct(product)
-            res.status(201).json({ response, status: 'success' })
+            res.status(201).send()
         }
         catch (error) {
-            res.status(500).json({ error: error.message, status: 'error' })
+            res.status(500).send(error.message)
         }
     }
 
@@ -50,10 +50,10 @@ export class ProductsController {
         console.log(product)
         try {
             const response = await this.productsService.UpdateProduct(product)
-            res.status(200).json({ response, status: 'success' })
+            res.status(200).send(response)
         }
         catch (error) {
-            res.status(500).json({ error: error.message, status: 'error' });
+            res.status(500).send(error.message)
         }
     }
 
@@ -61,10 +61,10 @@ export class ProductsController {
         const id: number = +req.params.pid;
         try {
             const response = await this.productsService.DeleteProduct(id)
-            res.status(200).json({ status: 'success' });
+            res.status(200).send(response)
         }
         catch (error) {
-            res.status(500).json({ error: error.message, status: 'error' });
+            res.status(500).send(error.message)
         }
     }
 }
