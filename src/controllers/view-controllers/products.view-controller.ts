@@ -1,8 +1,8 @@
-import { IProduct } from "../models/product.model";
-import { ProductsService } from "../services/products.service";
+import { IProduct } from "../../models/product.model";
+import { ProductsService } from "../../services/products.service";
 
 
-export class ProductsController {
+export class ProductsViewController {
     private productsService: ProductsService
 
     constructor() {
@@ -16,7 +16,7 @@ export class ProductsController {
             if (limit) {
                 response = response.slice(0, limit as number)
             }
-            res.status(200).send(response)
+            res.render('home', { products: response })
         }
         catch (error) {
             res.status(500).send(error.message)

@@ -17,6 +17,13 @@ const productsController = new ProductsController();
  *     tags:
  *       - Products
  *     summary: Obtiene todos los productos
+ *     parameters:
+ *       - in: query
+ *         name: limit
+ *         description: Número máximo de productos a devolver
+ *         schema:
+ *           type: integer
+ *           format: int32
  *     responses:
  *       200:
  *         description: OK
