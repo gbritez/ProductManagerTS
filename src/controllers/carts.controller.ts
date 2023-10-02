@@ -1,4 +1,5 @@
 import { CartsService } from "../services/carts.service";
+import { Request, Response } from 'express'
 
 export class CartsController {
     private cartsService: CartsService

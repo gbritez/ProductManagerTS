@@ -7,4 +7,7 @@ const productViewController = new ProductsViewController();
 
 viewsRouter.get('/', productViewController.GetAll)
 
+//real time products
+viewsRouter.get('/realTimeProducts', productViewController.GetRealTimeProducts)
+
 export = viewsRouter

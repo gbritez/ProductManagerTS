@@ -1,6 +1,6 @@
 import { IProduct } from "../models/product.model";
 import { ProductsService } from "../services/products.service";
-
+import { Request, Response } from 'express'
 
 export class ProductsController {
     private productsService: ProductsService
@@ -9,10 +9,11 @@ export class ProductsController {
         this.productsService = new ProductsService()
     }
 
-    GetAll = async (req, res) => {
+    GetAll = async (req: Request, res: Response) => {
         const { limit } = req.query;
         try {
             let response = await this.productsService.GetProducts();
+            console.log(response.slice(0, limit as number))
             if (limit) {
                 response = response.slice(0, limit as number)
             }
@@ -23,7 +24,7 @@ export class ProductsController {
         }
     }
 
-    GetById = async (req, res) => {
+    GetById = async (req: Request, res: Response) => {
         const id: number = +req.params.pid;
         try {
             const response = await this.productsService.GetProductById(id);
@@ -34,7 +35,7 @@ export class ProductsController {
         }
     }
 
-    Insert = async (req, res) => {
+    Insert = async (req: Request, res: Response) => {
         const product: IProduct = req.body;
         try {
             const response = await this.productsService.AddProduct(product)
@@ -45,7 +46,7 @@ export class ProductsController {
         }
     }
 
-    Update = async (req, res) => {
+    Update = async (req: Request, res: Response) => {
         const product: IProduct = req.body;
         try {
             const response = await this.productsService.UpdateProduct(product)
@@ -56,7 +57,7 @@ export class ProductsController {
         }
     }
 
-    Delete = async (req, res) => {
+    Delete = async (req: Request, res: Response) => {
         const id: number = +req.params.pid;
         try {
             const response = await this.productsService.DeleteProduct(id)
