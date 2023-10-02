@@ -38,6 +38,7 @@ socketServer.on('connection', async socket => {
     socket.emit("realTimeProducts", products)
 
     socket.on("Insert", async (data) => {
+        console.log(data)
         await productsService.AddProduct(data)
         const products = await productsService.GetProducts()
         socket.emit("realTimeProducts", products)
