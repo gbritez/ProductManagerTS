@@ -1,16 +1,27 @@
 const socket = io();
-const content = document.getElementById("content")
 
-socket.on("realTimeProducts", (data) => {
+socket.on("realTimeProducts", ({ products, message }) => {
+
+    if (message !== undefined) {
+
+        Swal.fire({
+            title: message.title,
+            icon: message.icon,
+            text: message.text,
+            timer: message.timer
+        })
+    }
+
     let productCards = ``
 
-    data.forEach(item => {
+    products.forEach(item => {
         productCards +=
             `        <div class="col mt-3">
         <div class="card" style="width: 18rem;">
             <img src="${item.thumbnail}" class="card-img-top " style="object-fit: cover; height: 12rem;" alt="...">
             <div class="card-body">
                 <h5 class="card-title" style="height: 4rem;">${item.title}</h5>
+                <h5 class="card-title" >ID : ${item.id}</h5>
                 <p>$${item.price}</p>
                 <p class="card-text">${item.description}</p>
                 <a href="#" class="btn btn-primary">Buy Now</a>
