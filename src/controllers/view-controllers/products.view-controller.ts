@@ -1,18 +1,21 @@
 import { IProduct } from "../../models/product.model";
+import { ProductsDaoService } from "../../services/products.dao.service";
 import { ProductsService } from "../../services/products.service";
 import { Request, Response } from 'express'
 
 export class ProductsViewController {
     private productsService: ProductsService
+    private productsDaoService: ProductsDaoService
 
     constructor() {
         this.productsService = new ProductsService()
+        this.productsDaoService = new ProductsDaoService()
     }
 
     GetAll = async (req: Request, res: Response) => {
         const { limit } = req.query;
         try {
-            let response = await this.productsService.GetProducts();
+            let response = await this.productsDaoService.GetProducts();
             if (limit) {
                 response = response.slice(0, limit as number)
             }
@@ -26,7 +29,7 @@ export class ProductsViewController {
     GetRealTimeProducts = async (req: Request, res: Response) => {
         const { limit } = req.query;
         try {
-            let response = await this.productsService.GetProducts();
+            let response = await this.productsDaoService.GetProducts();
             if (limit) {
                 response = response.slice(0, limit as number)
             }
@@ -39,9 +42,9 @@ export class ProductsViewController {
 
 
     GetById = async (req: Request, res: Response) => {
-        const id: number = +req.params.pid;
+        const id: string = req.params.pid;
         try {
-            const response = await this.productsService.GetProductById(id);
+            const response = await this.productsDaoService.GetProductById(id);
             res.status(200).send(response)
         }
         catch (error) {
@@ -52,7 +55,7 @@ export class ProductsViewController {
     Insert = async (req: Request, res: Response) => {
         const product: IProduct = req.body;
         try {
-            const response = await this.productsService.AddProduct(product)
+            const response = await this.productsDaoService.AddProduct(product)
             res.status(201).send()
         }
         catch (error) {
@@ -63,7 +66,7 @@ export class ProductsViewController {
     Update = async (req: Request, res: Response) => {
         const product: IProduct = req.body;
         try {
-            const response = await this.productsService.UpdateProduct(product)
+            const response = await this.productsDaoService.UpdateProduct(product)
             res.status(200).send(response)
         }
         catch (error) {
@@ -72,9 +75,9 @@ export class ProductsViewController {
     }
 
     Delete = async (req: Request, res: Response) => {
-        const id: number = +req.params.pid;
+        const id: string = req.params.pid;
         try {
-            const response = await this.productsService.DeleteProduct(id)
+            const response = await this.productsDaoService.DeleteProduct(id)
             res.status(200).send(response)
         }
         catch (error) {

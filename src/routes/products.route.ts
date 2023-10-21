@@ -69,9 +69,6 @@ productsRouter.get('/:pid', productsController.GetById)
  *           schema:
  *             type: object
  *             properties:
- *               id:
- *                 type: number
- *                 description: Identificador único del producto (opcional)
  *               title:
  *                 type: string
  *                 description: Título del producto

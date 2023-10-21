@@ -6,8 +6,10 @@ const viewsRouter = express.Router();
 const productViewController = new ProductsViewController();
 
 viewsRouter.get('/', productViewController.GetAll)
-
-//real time products
 viewsRouter.get('/realTimeProducts', productViewController.GetRealTimeProducts)
+viewsRouter.get('/chat', (req, res) => {
+    res.render("chat");
+})
+
 
 export = viewsRouter

@@ -21,7 +21,7 @@ socket.on("realTimeProducts", ({ products, message }) => {
             <img src="${item.thumbnail}" class="card-img-top " style="object-fit: cover; height: 12rem;" alt="...">
             <div class="card-body">
                 <h5 class="card-title" style="height: 4rem;">${item.title}</h5>
-                <h5 class="card-title" >ID : ${item.id}</h5>
+                <h5 class="card-title" >ID : ${item._id}</h5>
                 <p>$${item.price}</p>
                 <p class="card-text">${item.description}</p>
                 <a href="#" class="btn btn-primary">Buy Now</a>
@@ -37,7 +37,6 @@ const addProduct = () => {
     const description = document.getElementById("description").value;
     const price = document.getElementById("price").value;
     const product = {
-        id: 0,
         title: title,
         description: description,
         code: Math.random() * 1000,
