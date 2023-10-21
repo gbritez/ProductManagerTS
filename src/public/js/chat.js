@@ -37,8 +37,6 @@ const sendMessage = () => {
     appendMessage({ user: userValue, message: messageValue });
 
     socket.emit("newMessage", { user: userValue, message: messageValue });
-
-    user.value = "";
     message.value = "";
 }
 
