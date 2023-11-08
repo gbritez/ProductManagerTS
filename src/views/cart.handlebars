@@ -1,0 +1,32 @@
+<div class="container">
+    <h1>Shopping Cart</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Thumbnail</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each response.products}}
+            <tr>
+                <td><img src="{{this.product.thumbnail}}" alt="Product Thumbnail" style="max-width: 100px;"></td>
+                <td>{{this.product.title}}</td>
+                <td>{{this.product.description}}</td>
+                <td>${{this.product.price}}</td>
+                <td>{{this.quantity}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3"></td>
+                <td><strong>Total:</strong></td>
+                <td id="totalAmount"><strong>$0.00</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

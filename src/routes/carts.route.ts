@@ -23,7 +23,7 @@ const cartsController = new CartsController();
  *         description: ID del carrito
  *         required: true
  *         schema:
- *           type: number
+ *           type: string
  *     responses:
  *       200:
  *         description: Productos obtenidos exitosamente
@@ -32,7 +32,7 @@ const cartsController = new CartsController();
  *       500:
  *         description: Error del servidor
  */
-cartsRouter.get('/:cid', cartsController.GetCartProductsById)
+cartsRouter.get('/:cid', cartsController.Get)
 
 /**
  * @swagger
@@ -47,12 +47,12 @@ cartsRouter.get('/:cid', cartsController.GetCartProductsById)
  *       500:
  *         description: Error del servidor
  */
-cartsRouter.post('/', cartsController.Insert)
+cartsRouter.post('/', cartsController.Create)
 
 /**
  * @swagger
  * /api/carts/{cid}/product/{pid}:
- *   post:
+ *   put:
  *     tags:
  *       - Carts
  *     summary: Actualizar producto en un carrito por su ID de carrito y ID de producto
@@ -62,13 +62,22 @@ cartsRouter.post('/', cartsController.Insert)
  *         description: ID del carrito
  *         required: true
  *         schema:
- *           type: number
+ *           type: string
  *       - name: pid
  *         in: path
  *         description: ID del producto
  *         required: true
  *         schema:
- *           type: number
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               quantity:
+ *                 type: number 
  *     responses:
  *       200:
  *         description: Producto actualizado en el carrito exitosamente
@@ -77,6 +86,96 @@ cartsRouter.post('/', cartsController.Insert)
  *       500:
  *         description: Error del servidor
  */
-cartsRouter.post('/:cid/product/:pid', cartsController.Update)
+cartsRouter.put('/:cid/product/:pid', cartsController.UpdateProduct)
+
+/**
+ * @swagger
+ * /api/carts/{cid}:
+ *   put:
+ *     tags:
+ *       - Carts
+ *     summary: Actualizar carrito
+ *     parameters:
+ *       - name: cid
+ *         in: path
+ *         description: ID del carrito
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               productIds:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *     responses:
+ *       200:
+ *         description: Producto actualizado en el carrito exitosamente
+ *       404:
+ *         description: Carrito o producto no encontrado
+ *       500:
+ *         description: Error del servidor
+ */
+cartsRouter.put('/:cid', cartsController.Update)
+
+/**
+ * @swagger
+ * /api/carts/{cid}/product/{pid}:
+ *   delete:
+ *     tags:
+ *       - Carts
+ *     summary: Eliminar un producto de un carrito por su ID de carrito y ID de producto
+ *     parameters:
+ *       - name: cid
+ *         in: path
+ *         description: ID del carrito
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: pid
+ *         in: path
+ *         description: ID del producto
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Producto eliminado del carrito exitosamente
+ *       404:
+ *         description: Carrito o producto no encontrado
+ *       500:
+ *         description: Error del servidor
+ */
+cartsRouter.delete('/:cid/product/:pid', cartsController.DeleteOne);
+
+/**
+ * @swagger
+ * /api/carts/{cid}:
+ *   delete:
+ *     tags:
+ *       - Carts
+ *     summary: Eliminar todos los productos de un carrito por su ID
+ *     parameters:
+ *       - name: cid
+ *         in: path
+ *         description: ID del carrito
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Todos los productos eliminados del carrito exitosamente
+ *       404:
+ *         description: Carrito no encontrado
+ *       500:
+ *         description: Error del servidor
+ */
+cartsRouter.delete('/:cid', cartsController.DeleteAll);
+
 
 export = cartsRouter

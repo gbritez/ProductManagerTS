@@ -13,12 +13,9 @@ export class ProductsController {
     }
 
     GetAll = async (req: Request, res: Response) => {
-        const { limit } = req.query;
+        const { limit = 10, sort, page = 1, ...query } = req.query;
         try {
-            let response = await this.productsDaoService.GetProducts();
-            if (limit) {
-                response = response.slice(0, limit as number)
-            }
+            let response = await this.productsDaoService.GetProducts(query, limit, sort, page);
             res.status(200).send(response)
         }
         catch (error) {
