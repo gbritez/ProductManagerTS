@@ -19,7 +19,8 @@ export class LoginController {
             const response = await this.loginDaoService.Login(credentials)
             if (response) {
                 req.session.user = { firstName: response.firstName, lastName: response.lastName }
-                res.redirect('/')
+                res.cookie('userInfo', JSON.stringify({ firstName: response.firstName, lastName: response.lastName }), { maxAge: 900000, httpOnly: false });
+                res.redirect('/');
             }
             else {
                 res.status(401).send('User or password incorrect')
