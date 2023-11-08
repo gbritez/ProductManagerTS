@@ -5,7 +5,7 @@ export class LoginDaoService {
         try {
             const exists = await User.findOne({ email: user.email })
             if (exists) {
-                throw new Error('User already exists')
+                return false;
             }
             else {
                 const response = await User.create({ ...user })

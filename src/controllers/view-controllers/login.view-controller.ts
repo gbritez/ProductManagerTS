@@ -12,7 +12,7 @@ export class LoginViewController {
             res.render('login', { layout: 'loginLayout.handlebars' })
         }
         catch (error) {
-            res.send(500)
+            res.status(500).send(error.message)
         }
     }
 
@@ -21,7 +21,7 @@ export class LoginViewController {
             res.render('register', { layout: 'loginLayout.handlebars' })
         }
         catch (error) {
-            res.send(500)
+            res.status(500).send(error.message)
         }
     }
 }

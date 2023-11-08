@@ -52,11 +52,14 @@ export class LoginController {
             password,
             role: email === isAdmin ? 'admin' : 'user'
         }
-        console.log(user)
         try {
             const response = await this.loginDaoService.Register(user)
-            if (response) {
-
+            if (!response) {
+                res.status(500).send('Email already exists.')
+            }
+            else {
+                req.session.user = { firstName: user.firstName, lastName: user.lastName }
+                res.redirect('/')
             }
         }
         catch (error) {
