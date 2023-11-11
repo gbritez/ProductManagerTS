@@ -69,7 +69,7 @@ export class CartsDaoService {
     async DeleteOne(cid: string, pid: string) {
         try {
             if (await Cart.exists({ _id: cid })) {
-                const response = await Cart.findByIdAndUpdate(cid, { $pull: { products: { product: pid } } }, { new: true })
+                const response = await Cart.findByIdAndUpdate(cid, { products: { product: pid } }, { new: true })
                 return response;
             }
         }

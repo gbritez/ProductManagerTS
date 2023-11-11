@@ -15,14 +15,22 @@ const isLoggedIn = (req, res, next) => {
     }
     next();
 };
-viewsRouter.use(['/products/:pid', '/realTimeProducts', '/cart/:cid', '/chat'], isLoggedIn);
+
+const hasActiveSession = (req, res, next) => {
+    if (req.session.passport) {
+        return res.redirect('/')
+    }
+    next()
+}
+viewsRouter.get('/login', hasActiveSession, loginViewController.Login)
+viewsRouter.get('/register', hasActiveSession, loginViewController.Register)
+viewsRouter.get("/error", (req, res) => { res.render("error", { layout: 'loginLayout.handlebars' }) });
+
 viewsRouter.get('/', isLoggedIn, productViewController.GetAll)
-viewsRouter.get('/products/:pid', productViewController.GetById)
-viewsRouter.get('/realTimeProducts', productViewController.GetRealTimeProducts)
-viewsRouter.get('/cart/:cid', cartViewController.Get)
-viewsRouter.get('/login', loginViewController.Login)
-viewsRouter.get('/register', loginViewController.Register)
-viewsRouter.get('/chat', (req, res) => {
+viewsRouter.get('/products/:pid', isLoggedIn, productViewController.GetById)
+viewsRouter.get('/realTimeProducts', isLoggedIn, productViewController.GetRealTimeProducts)
+viewsRouter.get('/cart/:cid', isLoggedIn, cartViewController.Get)
+viewsRouter.get('/chat', isLoggedIn, (req, res) => {
     res.render("chat");
 })
 

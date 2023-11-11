@@ -4,20 +4,25 @@ import cors from 'cors'
 import { engine } from 'express-handlebars'
 import { Server } from 'socket.io';
 import Handlebars from 'handlebars';
-import swaggerSpec from './swagger';
-import './dbConfig'
+import swaggerSpec from './config/swagger';
+import './config/db.config'
+import './config/passport.config'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import cookieParser from "cookie-parser";
+import passport from "passport"
+import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
+
 
 import productsRouter from './routes/products.route';
 import cartsRouter from './routes/carts.route'
 import viewsRouter from './routes/views.route';
+import loginRouter from './routes/login.route';
+
 import { ProductsService } from './services/products.service';
 import { ProductsDaoService } from './services/products.dao.service';
 import { ChatDaoService } from './services/chat.dao.service';
-import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
-import loginRouter from './routes/login.route';
+
 
 const app = express();
 const httpServer = app.listen(8080)
@@ -37,6 +42,10 @@ app.use(
         cookie: { maxAge: 60000 }
     })
 )
+// passport
+app.use(passport.initialize());
+app.use(passport.session());
+
 //Routes
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartsRouter)
@@ -49,7 +58,6 @@ app.engine('handlebars', engine({
 }));
 app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
-
 
 //server
 const socketServer = new Server(httpServer);

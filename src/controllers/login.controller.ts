@@ -1,6 +1,8 @@
 import { Request, Response } from 'express'
 import { LoginDaoService } from '../services/login.dao.service'
 import { IUser, IUserCredentials } from '../models/user.model'
+import { hashData } from '../helpers/Encryption'
+import passport from "passport"
 
 export class LoginController {
     private loginDaoService: LoginDaoService
@@ -8,28 +10,13 @@ export class LoginController {
         this.loginDaoService = new LoginDaoService()
     }
 
-
-    Login = async (req: Request, res: Response) => {
-        const { email, password } = req.body;
-        const credentials: IUserCredentials = {
-            email,
-            password
-        }
-        try {
-            const response = await this.loginDaoService.Login(credentials)
-            if (response) {
-                req.session.user = { firstName: response.firstName, lastName: response.lastName }
-                res.cookie('userInfo', JSON.stringify({ firstName: response.firstName, lastName: response.lastName }), { maxAge: 900000, httpOnly: false });
-                res.redirect('/');
-            }
-            else {
-                res.status(401).send('User or password incorrect')
-            }
-        }
-        catch (error) {
-            res.status(500).send(error)
-        }
-    }
+    Login = (req, res, next) => {
+        passport.authenticate("login", {
+            successRedirect: '/',
+            failureRedirect: '/error',
+            keepSessionInfo: true
+        })(req, res, next);
+    };
 
     Logout = async (req: Request, res: Response) => {
         try {
@@ -50,7 +37,7 @@ export class LoginController {
             lastName,
             age,
             email,
-            password,
+            password: await hashData(password),
             role: email === isAdmin ? 'admin' : 'user'
         }
         try {

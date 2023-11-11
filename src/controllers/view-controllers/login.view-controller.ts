@@ -9,7 +9,8 @@ export class LoginViewController {
 
     Login = async (req, res) => {
         try {
-            res.render('login', { layout: 'loginLayout.handlebars' })
+            console.log("hola", req.session)
+            res.render('login', { layout: 'loginLayout.handlebars', user: req.session.user })
         }
         catch (error) {
             res.status(500).send(error.message)

@@ -1,3 +1,4 @@
+import { compareData } from "../helpers/Encryption";
 import User, { IUser, IUserCredentials } from "../models/user.model";
 export class LoginDaoService {
 
@@ -18,9 +19,15 @@ export class LoginDaoService {
     }
     async Login(credentials: IUserCredentials) {
         try {
-            const user = await User.findOne({ email: credentials.email, password: credentials.password })
+            const user = await User.findOne({ email: credentials.email })
             if (user) {
-                return user;
+                const isPasswordValid = await compareData(user.password, credentials.password)
+                if (isPasswordValid) {
+                    return user
+                }
+                else {
+                    return false
+                }
             }
             else {
                 return false
