@@ -13,9 +13,10 @@ export class ProductsViewController {
 
     GetAll = async (req: Request, res: Response) => {
         const { limit = 10, sort, page = 1, ...query } = req.query;
+        const user = req.session.user
         try {
             const response: ICustomResponse = await this.productsDaoService.GetProducts(query, limit, sort, page);
-            res.render('home', { products: response })
+            res.render('home', { products: response, user })
         }
         catch (error) {
             res.status(500).send(error.message)

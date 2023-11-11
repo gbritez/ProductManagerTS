@@ -15,7 +15,7 @@ export class LoginController {
             successRedirect: '/',
             failureRedirect: '/error',
             keepSessionInfo: true
-        })(req, res, next);
+        })(req, res, next)
     };
 
     Logout = async (req: Request, res: Response) => {

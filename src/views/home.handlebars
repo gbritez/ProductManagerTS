@@ -1,12 +1,11 @@
 {{#if user}}
-<!-- Display SweetAlert when the page loads -->
+
 <script>
-    consoloe.log('I have a success message')
     document.addEventListener('DOMContentLoaded', function () {
         Swal.fire({
             icon: 'success',
-            title: 'Success!',
-            text: '{{successMessage}}',
+            title: 'Hello!',
+            text: `Welcome back {{{ user.firstName }}}`,
             timer: 3000,
             showConfirmButton: false
         });

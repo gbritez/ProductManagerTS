@@ -23,7 +23,6 @@ passport.use(
                 }
 
                 req.session.user = { email, firstName: user.firstName, lastName: user.lastName, role: user.role };
-
                 return done(null, user);
             } catch (error) {
                 console.log(error)
@@ -62,7 +61,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
     try {
-        const user = await User.find({ id });
+        const user = await User.findById(id);
         done(null, user);
     } catch (error) {
         done(error);
