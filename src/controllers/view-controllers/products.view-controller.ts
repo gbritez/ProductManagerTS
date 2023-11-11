@@ -34,7 +34,6 @@ export class ProductsViewController {
         }
     }
 
-
     GetById = async (req: Request, res: Response) => {
         const id: string = req.params.pid;
         try {

@@ -6,6 +6,7 @@ export interface IUser {
     age: number;
     email: string;
     password: string;
+    isGithub?: boolean;
     role: 'user' | 'admin';
 }
 
@@ -20,6 +21,7 @@ const userSchema = new Schema<IUser>({
     age: { type: Number, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    isGithub: { type: Boolean, default: false },
     role: { type: String, required: true, enum: ['user', 'admin'] }
 });
 

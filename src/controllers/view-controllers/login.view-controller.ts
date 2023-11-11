@@ -1,10 +1,9 @@
-import { LoginDaoService } from "../../services/login.dao.service";
 
 export class LoginViewController {
-    private loginDaoService: LoginDaoService;
+
 
     constructor() {
-        this.loginDaoService = new LoginDaoService();
+
     }
 
     Login = async (req, res) => {

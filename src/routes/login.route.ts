@@ -84,4 +84,12 @@ loginRouter.get("/logout", loginController.Logout);
 
 loginRouter.post("/register", loginController.Register);
 
+//GITHUB
+
+//Callback function
+loginRouter.get('/login/github', loginController.LoginGithub)
+
+loginRouter.get("/auth/github", loginController.AuthorizeGithub)
+
+
 export default loginRouter;

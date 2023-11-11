@@ -1,5 +1,5 @@
 {{#if user}}
-
+{{#unless showWelcomeMessage}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         Swal.fire({
@@ -8,10 +8,13 @@
             text: `Welcome back {{{ user.firstName }}}`,
             timer: 3000,
             showConfirmButton: false
+        }).then(() => {
+            // After the SweetAlert is closed, set the flag to true
+            { { showWelcomeMessage = true } }
         });
     });
 </script>
-
+{{/unless}}
 {{/if}}
 
 <div class="container">
