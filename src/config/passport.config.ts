@@ -13,20 +13,17 @@ passport.use(
             try {
                 const user = await User.findOne({ email });
                 if (!user) {
-                    console.log('cant find user')
                     return done(null, false);
                 }
 
                 const isPasswordValid = await compareData(password, user.password);
                 if (!isPasswordValid) {
-                    console.log('password invalid')
                     return done(null, false);
                 }
 
                 req.session.user = { email, firstName: user.firstName, lastName: user.lastName, role: user.role };
                 return done(null, user);
             } catch (error) {
-                console.log(error)
                 return done(error);
             }
         }
@@ -38,19 +35,28 @@ passport.use(
     new LocalStrategy(
         { passReqToCallback: true, usernameField: "email" },
         async (req, email, password, done) => {
-            const { first_name, last_name } = req.body;
-            if (!first_name || !last_name || !email || !password) {
-                return done(null, false);
+            const isAdmin = 'adminCoder@coder.com'
+            const { firstName, lastName, age } = req.body;
+            const user: IUser = {
+                firstName,
+                lastName,
+                age,
+                email,
+                password: await hashData(password),
+                role: email === isAdmin ? 'admin' : 'user'
             }
             try {
-                const hashedPassword = await hashData(password);
-                const createdUser = await User.create({
-                    ...req.body,
-                    password: hashedPassword,
-                });
-                done(null, createdUser);
-            } catch (error) {
-                done(error);
+                const userExists = await User.findOne({ email })
+                if (userExists) {
+                    return done(null, false)
+                }
+                else {
+                    const createdUser = await User.create(user)
+                    return done(null, createdUser)
+                }
+            }
+            catch (error) {
+                return done(error)
             }
         }
     )
@@ -60,7 +66,7 @@ passport.use("github", new GithubStrategy(
     {
         clientID: "Iv1.f070c7997e1dacfb",
         clientSecret: "331262fd9a955ee5f28e0052149abc9e9b43f213",
-        callbackURL: "http://localhost:8080/api/login/github"
+        callbackURL: "http://localhost:8080/api/login/github",
     },
     async (accessToken, refreshToken, profile: any, done) => {
         try {

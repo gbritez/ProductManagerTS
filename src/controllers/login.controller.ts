@@ -44,36 +44,28 @@ export class LoginController {
             })(req, res, next)
     };
     LoginGithub = (req, res, next) => {
-        passport.authenticate("github",
-            {
-                successRedirect: '/',
-                failureRedirect: '/error',
-                keepSessionInfo: true
-            })(req, res, next)
+        passport.authenticate("github", {
+            successRedirect: '/',
+            failureRedirect: '/error',
+            keepSessionInfo: true
+        }, (err, user, info) => {
+            if (err) {
+                return next(err);
+            }
+            if (!user) {
+                return res.redirect('/error');
+            }
+
+            req.logIn(user, (loginErr) => {
+                if (loginErr) {
+                    return next(loginErr);
+                }
+
+                req.session.user = user;
+
+                return res.redirect('/');
+            });
+        })(req, res, next);
     };
-    // Register = async (req: Request, res: Response) => {
-    //     const isAdmin = 'adminCoder@coder.com'
-    //     const { firstName, lastName, age, email, password } = req.body;
-    //     const user: IUser = {
-    //         firstName,
-    //         lastName,
-    //         age,
-    //         email,
-    //         password: await hashData(password),
-    //         role: email === isAdmin ? 'admin' : 'user'
-    //     }
-    //     try {
-    //         const response = await this.loginDaoService.Register(user)
-    //         if (!response) {
-    //             res.status(500).send('Email already exists.')
-    //         }
-    //         else {
-    //             req.session.user = { firstName: user.firstName, lastName: user.lastName }
-    //             res.redirect('/')
-    //         }
-    //     }
-    //     catch (error) {
-    //         res.status(500).send(error)
-    //     }
-    // }
+
 }
