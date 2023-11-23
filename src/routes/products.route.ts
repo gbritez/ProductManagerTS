@@ -24,6 +24,18 @@ const productsController = new ProductsController();
  *         schema:
  *           type: integer
  *           format: int32
+ *       - in: query
+ *         name: sort
+ *         description: Ordenar por precio (asc o desc)
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *       - in: query
+ *         name: page
+ *         description: Número de página
+ *         schema:
+ *           type: integer
+ *           format: int32
  *     responses:
  *       200:
  *         description: OK

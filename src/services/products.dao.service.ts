@@ -10,7 +10,18 @@ export class ProductsDaoService {
     }
 
     async GetProducts(query?: object, limit?: number, sort?: string, page?: number) {
-        const response = await Product.paginate(query, { limit, page, lean: true })
+        let sortOptions: object = {};
+
+        if (sort) {
+            if (sort === 'asc') {
+                sortOptions = { price: 1 };
+            } else if (sort === 'desc') {
+                sortOptions = { price: -1 };
+            }
+        }
+
+        const response = await Product.paginate(query, { limit, page, sort: sortOptions, lean: true });
+
         const status = response ? "success" : "error"
 
         const result: ICustomResponse = {
