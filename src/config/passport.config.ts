@@ -20,8 +20,8 @@ passport.use(
                 if (!isPasswordValid) {
                     return done(null, false);
                 }
-
-                req.session.user = { email, firstName: user.firstName, lastName: user.lastName, role: user.role };
+                const isAdmin = (email === 'adminCoder@coder.com' && password === 'adminCod3r123')
+                req.session.user = { email, firstName: user.firstName, lastName: user.lastName, role: isAdmin ? 'admin' : 'user' };
                 return done(null, user);
             } catch (error) {
                 return done(error);
@@ -35,7 +35,6 @@ passport.use(
     new LocalStrategy(
         { passReqToCallback: true, usernameField: "email" },
         async (req, email, password, done) => {
-            const isAdmin = 'adminCoder@coder.com'
             const { firstName, lastName, age } = req.body;
             const user: IUser = {
                 firstName,
@@ -43,7 +42,7 @@ passport.use(
                 age,
                 email,
                 password: await hashData(password),
-                role: email === isAdmin ? 'admin' : 'user'
+                role: 'user'
             }
             try {
                 const userExists = await User.findOne({ email })
