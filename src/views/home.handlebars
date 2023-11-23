@@ -5,11 +5,10 @@
         Swal.fire({
             icon: 'success',
             title: 'Hello!',
-            text: `Welcome back {{{ user.firstName }}}`,
+            text: `Welcome back {{{ user.firstName }}} ({{{user.role}}})`,
             timer: 3000,
             showConfirmButton: false
         }).then(() => {
-            // After the SweetAlert is closed, set the flag to true
             { { showWelcomeMessage = true } }
         });
     });
