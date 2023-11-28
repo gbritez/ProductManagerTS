@@ -45,36 +45,36 @@ export class ProductsViewController {
         }
     }
 
-    Insert = async (req: Request, res: Response) => {
-        const product: IProduct = req.body;
-        try {
-            const response = await this.productsDaoService.AddProduct(product)
-            res.status(201).send(response)
-        }
-        catch (error) {
-            res.status(500).send(error.message)
-        }
-    }
+    // Insert = async (req: Request, res: Response) => {
+    //     const product: IProduct = req.body;
+    //     try {
+    //         const response = await this.productsDaoService.AddProduct(product)
+    //         res.status(201).send(response)
+    //     }
+    //     catch (error) {
+    //         res.status(500).send(error.message)
+    //     }
+    // }
 
-    Update = async (req: Request, res: Response) => {
-        const product: IProduct = req.body;
-        try {
-            const response = await this.productsDaoService.UpdateProduct(product)
-            res.status(200).send(response)
-        }
-        catch (error) {
-            res.status(500).send(error.message)
-        }
-    }
+    // Update = async (req: Request, res: Response) => {
+    //     const product: IProduct = req.body;
+    //     try {
+    //         const response = await this.productsDaoService.UpdateProduct(product)
+    //         res.status(200).send(response)
+    //     }
+    //     catch (error) {
+    //         res.status(500).send(error.message)
+    //     }
+    // }
 
-    Delete = async (req: Request, res: Response) => {
-        const id: string = req.params.pid;
-        try {
-            const response = await this.productsDaoService.DeleteProduct(id)
-            res.status(200).send(response)
-        }
-        catch (error) {
-            res.status(500).send(error.message)
-        }
-    }
+    // Delete = async (req: Request, res: Response) => {
+    //     const id: string = req.params.pid;
+    //     try {
+    //         const response = await this.productsDaoService.DeleteProduct(id)
+    //         res.status(200).send(response)
+    //     }
+    //     catch (error) {
+    //         res.status(500).send(error.message)
+    //     }
+    // }
 }

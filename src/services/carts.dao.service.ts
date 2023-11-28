@@ -12,9 +12,10 @@ export class CartsDaoService {
     }
 
     async Get(id: string) {
+        console.log(id)
         try {
             const response = await Cart.findById(id).populate("products.product");
-
+            console.log(response)
             return response
         }
         catch (error) {

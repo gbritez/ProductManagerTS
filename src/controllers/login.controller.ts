@@ -17,6 +17,7 @@ export class LoginController {
     Logout = async (req: Request, res: Response) => {
         try {
             req.session.destroy(() => {
+                res.clearCookie('hideWelcomeMessage')
                 res.redirect('/login')
             })
         }
@@ -68,4 +69,22 @@ export class LoginController {
         })(req, res, next);
     };
 
+    Current = (req, res, next) => {
+        try {
+            if (req.session && req.session.user) {
+                // Access user-related information stored in the session
+                const currentUser = req.session.user;
+                res.status(200).json(currentUser);
+            } else {
+                res.status(401).json({
+                    message: 'User session not found',
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: 'Internal server error',
+            });
+        }
+    }
 }

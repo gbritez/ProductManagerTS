@@ -4,6 +4,7 @@ import { Strategy as GithubStrategy } from 'passport-github2'
 import { Request } from 'express';
 import User, { IUser } from '../models/user.model';
 import { compareData, hashData } from '../helpers/Encryption';
+import Cart from '../models/cart.model';
 
 passport.use(
     "login",
@@ -21,7 +22,18 @@ passport.use(
                     return done(null, false);
                 }
                 const isAdmin = (email === 'adminCoder@coder.com' && password === 'adminCod3r123')
-                req.session.user = { email, firstName: user.firstName, lastName: user.lastName, role: isAdmin ? 'admin' : 'user' };
+                if (!user.cart) {
+                    const newCart = await Cart.create({ /* Cart properties */ });
+                    user.cart = newCart._id;
+                    await user.save();
+                }
+                req.session.user = {
+                    email,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    role: isAdmin ? 'admin' : 'user',
+                    cart: user.cart
+                };
                 return done(null, user);
             } catch (error) {
                 return done(error);
@@ -42,7 +54,8 @@ passport.use(
                 age,
                 email,
                 password: await hashData(password),
-                role: 'user'
+                role: 'user',
+                cart: null
             }
             try {
                 const userExists = await User.findOne({ email })
@@ -88,6 +101,7 @@ passport.use("github", new GithubStrategy(
                 role: 'user',
                 age: 0,
                 isGithub: true,
+                cart: null
             }
             const createdUser = await User.create(infoUser)
             done(null, createdUser)

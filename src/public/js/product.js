@@ -1,7 +1,6 @@
 
 async function addToCart(id) {
-    const cartId = getCartId()
-
+    const cartId = await getCartId()
     try {
         await fetch("/api/carts/" + cartId, {
             method: "PUT",

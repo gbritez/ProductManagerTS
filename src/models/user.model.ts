@@ -8,6 +8,7 @@ export interface IUser {
     password: string;
     isGithub?: boolean;
     role: 'user' | 'admin';
+    cart: any
 }
 
 export interface IUserCredentials {
@@ -22,7 +23,8 @@ const userSchema = new Schema<IUser>({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     isGithub: { type: Boolean, default: false },
-    role: { type: String, required: true, enum: ['user', 'admin'] }
+    role: { type: String, required: true, enum: ['user', 'admin'] },
+    cart: { type: Schema.Types.ObjectId, ref: 'Cart' }
 });
 
 const User = model<IUser>("User", userSchema);

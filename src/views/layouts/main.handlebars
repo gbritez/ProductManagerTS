@@ -70,10 +70,10 @@
 
 <script src="/js/helpers.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", async function () {
         const cartLink = document.getElementById('cartLink')
         if (cartLink) {
-            const cartId = getCartId()
+            const cartId = await getCartId()
             if (cartId) {
                 cartLink.href = `/cart/${cartId}`
             }

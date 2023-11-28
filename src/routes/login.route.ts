@@ -91,5 +91,7 @@ loginRouter.get('/login/github', loginController.LoginGithub)
 
 loginRouter.get("/auth/github", loginController.AuthorizeGithub)
 
+loginRouter.get("/session/current", loginController.Current)
+
 
 export default loginRouter;

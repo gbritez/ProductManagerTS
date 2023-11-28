@@ -1,8 +1,7 @@
 import { connect } from 'mongoose';
-const url = 'mongodb+srv://gbritez:viuLjEoXqoKUXAqY@dev-coderhouse-ecommerc.38ar6ty.mongodb.net/?retryWrites=true&w=majority'
 const start = async () => {
     try {
-        await connect(url, { dbName: 'ecommerce' })
+        await connect(process.env.DB_URI, { dbName: 'ecommerce' })
         console.log('connected to db')
     }
     catch (error) {

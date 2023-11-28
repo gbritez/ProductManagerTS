@@ -1,19 +1,20 @@
 {{#if user}}
-{{#unless showWelcomeMessage}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        Swal.fire({
-            icon: 'success',
-            title: 'Hello!',
-            text: `Welcome back {{{ user.firstName }}} ({{{user.role}}})`,
-            timer: 3000,
-            showConfirmButton: false
-        }).then(() => {
-            { { showWelcomeMessage = true } }
-        });
+        const hide = getCookie("hideWelcomeMessage")
+        if (!hide) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Hello!',
+                text: `Welcome back {{{ user.firstName }}} ({{{user.role}}})`,
+                timer: 3000,
+                showConfirmButton: false
+            }).then(() => {
+                { setCookie("hideWelcomeMessage", true) }
+            });
+        }
     });
 </script>
-{{/unless}}
 {{/if}}
 
 <div class="container">
@@ -66,5 +67,5 @@
         </div>
     </div>
 </div>
-<script src="/js/cart.js"></script>
 <script src="/js/product.js"></script>
+<script src="/js/helpers.js"></script>

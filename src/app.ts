@@ -1,4 +1,5 @@
 import express from 'express'
+require('dotenv').config();
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors'
 import { engine } from 'express-handlebars'
@@ -25,7 +26,7 @@ import { ChatDaoService } from './services/chat.dao.service';
 
 
 const app = express();
-const httpServer = app.listen(8080)
+const httpServer = app.listen(process.env.PORT, () => console.log(`Server listening on port : http://localhost:${process.env.PORT}`))
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
@@ -37,7 +38,7 @@ app.use(express.static(__dirname + '/public'))
 //mongo
 app.use(
     session({
-        store: new MongoStore({ mongoUrl: 'mongodb+srv://gbritez:viuLjEoXqoKUXAqY@dev-coderhouse-ecommerc.38ar6ty.mongodb.net/ecommerce?retryWrites=true&w=majority' }),
+        store: new MongoStore({ mongoUrl: process.env.DB_URI }),
         secret: 'secretSession',
         cookie: { maxAge: 60000 }
     })
