@@ -72,7 +72,6 @@ export class LoginController {
     Current = (req, res, next) => {
         try {
             if (req.session && req.session.user) {
-                // Access user-related information stored in the session
                 const currentUser = req.session.user;
                 res.status(200).json(currentUser);
             } else {

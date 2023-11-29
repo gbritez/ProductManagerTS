@@ -14,7 +14,7 @@ async function getCartId() {
 };
 
 function setCookie(cookieName, value) {
-    document.cookie = `${cookieName} = ${value}; `
+    document.cookie = `${cookieName} = ${value};expires=30000; `
 }
 
 function getCookie(cookieName) {
