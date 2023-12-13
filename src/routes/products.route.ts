@@ -1,7 +1,7 @@
 import { ProductsController } from '../controllers/products.controller';
 import express from 'express'
 
-const productsRouter = express.Router()
+export const productsRouter = express.Router()
 const productsController = new ProductsController();
 /**
  * @swagger
@@ -173,4 +173,3 @@ productsRouter.put('/', productsController.Update)
  */
 productsRouter.delete('/:pid', productsController.Delete)
 
-export = productsRouter;

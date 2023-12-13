@@ -3,7 +3,7 @@ import { ProductsViewController } from '../controllers/view-controllers/products
 import { CartsViewController } from '../controllers/view-controllers/carts.view-controller';
 import { LoginViewController } from '../controllers/view-controllers/login.view-controller';
 
-const viewsRouter = express.Router();
+export const viewsRouter = express.Router();
 
 const productViewController = new ProductsViewController();
 const cartViewController = new CartsViewController();
@@ -34,6 +34,3 @@ viewsRouter.get('/cart/:cid', hasActiveSession, cartViewController.Get)
 viewsRouter.get('/chat', hasActiveSession, (req, res) => {
     res.render("chat");
 })
-
-
-export = viewsRouter

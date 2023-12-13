@@ -15,10 +15,7 @@ import passport from "passport"
 import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
 
 
-import productsRouter from './routes/products.route';
-import cartsRouter from './routes/carts.route'
-import viewsRouter from './routes/views.route';
-import loginRouter from './routes/login.route';
+import { cartsRouter, loginRouter, viewsRouter, productsRouter } from './routes/index';
 
 import { ProductsService } from './services/products.dao.service';
 import { ChatDaoService } from './services/chat.dao.service';

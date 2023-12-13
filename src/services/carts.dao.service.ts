@@ -1,20 +1,21 @@
 
+import { CartsDao } from '../dao/carts.dao'
 import Cart from '../models/cart.model'
 
-export class CartsDaoService {
-
+export class CartsService {
+    cartsDao: CartsDao
     constructor() {
+        this.cartsDao = new CartsDao()
     }
 
     async Create() {
-        const response = await Cart.create({ products: [] })
+        const response = await this.cartsDao.CreateOne({ products: [] })
         return response
     }
 
     async Get(id: string) {
-        console.log(id)
         try {
-            const response = await Cart.findById(id).populate("products.product");
+            const response = await this.cartsDao.GetOne(id, "products.product")
             return response
         }
         catch (error) {
@@ -44,7 +45,7 @@ export class CartsDaoService {
     }
 
     async UpdateProduct(cid: string, pid: string, quantity: number) {
-        const cart = await Cart.findById(cid);
+        const cart = await this.cartsDao.GetOne(cid);
         try {
             if (cart) {
                 const productIndex = cart.products.findIndex(x => x.product.toString() === pid);
@@ -68,8 +69,9 @@ export class CartsDaoService {
 
     async DeleteOne(cid: string, pid: string) {
         try {
-            if (await Cart.exists({ _id: cid })) {
-                const response = await Cart.findByIdAndUpdate(cid, { products: { product: pid } }, { new: true })
+            const cartExists = await this.cartsDao.GetOne(cid)
+            if (cartExists) {
+                const response = await this.cartsDao.UpdateOne(cid, { products: { product: pid } }, { new: true })
                 return response;
             }
         }
@@ -81,7 +83,7 @@ export class CartsDaoService {
 
     async DeleteAll(cid: string) {
         try {
-            const response = await Cart.findByIdAndUpdate(cid, { products: [] })
+            const response = await this.cartsDao.UpdateOne(cid, { products: [] })
             return response;
         }
         catch (error) {

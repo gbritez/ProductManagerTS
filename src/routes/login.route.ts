@@ -2,7 +2,7 @@ import { LoginController } from '../controllers/login.controller';
 import express from 'express';
 import passport from "passport"
 
-const loginRouter = express.Router();
+export const loginRouter = express.Router();
 const loginController = new LoginController();
 
 /**
@@ -92,6 +92,3 @@ loginRouter.get('/login/github', loginController.LoginGithub)
 loginRouter.get("/auth/github", loginController.AuthorizeGithub)
 
 loginRouter.get("/session/current", loginController.Current)
-
-
-export default loginRouter;

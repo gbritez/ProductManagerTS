@@ -48,7 +48,7 @@ passport.use(
         { passReqToCallback: true, usernameField: "email" },
         async (req, email, password, done) => {
             const { firstName, lastName, age } = req.body;
-            const user: IUser = {
+            const user = {
                 firstName,
                 lastName,
                 age,

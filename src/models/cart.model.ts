@@ -1,7 +1,7 @@
 import { Schema, model, Model, Document } from "mongoose";
 import { IProduct } from "./product.model";
 
-interface ICart extends Document {
+export interface ICart extends Document {
     products: [{
         product: any,
         quantity: number

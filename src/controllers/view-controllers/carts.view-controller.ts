@@ -1,16 +1,16 @@
-import { CartsDaoService } from "../../services/carts.dao.service";
+import { CartsService } from "../../services/carts.dao.service";
 
 export class CartsViewController {
-    private cartsDaoService: CartsDaoService
+    private cartsService: CartsService
 
     constructor() {
-        this.cartsDaoService = new CartsDaoService();
+        this.cartsService = new CartsService();
     }
 
     Get = async (req, res) => {
         const id: string = req.params.cid
         try {
-            const response = await this.cartsDaoService.Get(id)
+            const response = await this.cartsService.Get(id)
             res.render('cart', { response })
         } catch (error) {
             res.status(500).send(error.message)

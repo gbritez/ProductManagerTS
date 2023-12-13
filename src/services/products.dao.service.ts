@@ -52,11 +52,11 @@ export class ProductsService {
     }
 
     async UpdateProduct(product: IProduct) {
-        await Product.findByIdAndUpdate(product.id, product)
+        await this.productsDao.UpdateOne(product.id, product)
     }
 
     async DeleteProduct(id: string) {
-        await Product.findByIdAndDelete(id)
+        await this.productsDao.DeleteOne(id)
     }
 
 

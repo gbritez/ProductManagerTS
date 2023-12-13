@@ -1,7 +1,7 @@
 import { CartsController } from '../controllers/carts.controller';
 import express from 'express'
 
-const cartsRouter = express.Router();
+export const cartsRouter = express.Router();
 
 const cartsController = new CartsController();
 /**
@@ -178,4 +178,3 @@ cartsRouter.delete('/:cid/product/:pid', cartsController.DeleteOne);
 cartsRouter.delete('/:cid', cartsController.DeleteAll);
 
 
-export = cartsRouter

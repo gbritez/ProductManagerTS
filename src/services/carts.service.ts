@@ -1,7 +1,7 @@
 // import fs from 'fs'
 // import { ICart, ICartProduct } from '../models/cart.model'
 
-export class CartsService {
+export class CartsServiceObsolete {
     //     path: string;
     //     constructor() {
     //         this.path = 'src/carrito.json'
