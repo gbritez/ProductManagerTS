@@ -1,8 +1,11 @@
+import { ProductsDao } from '../dao/products.dao';
 import { ICustomResponse } from '../helpers/CustomResponse';
 import Product, { IProduct } from '../models/product.model';
 
-export class ProductsDaoService {
+export class ProductsService {
+    productsDao: ProductsDao
     constructor() {
+        this.productsDao = new ProductsDao()
     }
 
     async AddProduct(product: IProduct) {
@@ -20,7 +23,7 @@ export class ProductsDaoService {
             }
         }
 
-        const response = await Product.paginate(query, { limit, page, sort: sortOptions, lean: true });
+        const response = await this.productsDao.GetPaginated(query, limit, page, sort)
 
         const status = response ? "success" : "error"
 
@@ -41,7 +44,7 @@ export class ProductsDaoService {
     }
 
     async GetProductById(id: string) {
-        const product: Document | null = await Product.findById(id).lean()
+        const product = await this.productsDao.GetOne(id)
         if (!product) {
             throw new Error(`Could not find product with id : ${id}`)
         }

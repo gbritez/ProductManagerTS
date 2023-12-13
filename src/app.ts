@@ -20,8 +20,7 @@ import cartsRouter from './routes/carts.route'
 import viewsRouter from './routes/views.route';
 import loginRouter from './routes/login.route';
 
-import { ProductsService } from './services/products.service';
-import { ProductsDaoService } from './services/products.dao.service';
+import { ProductsService } from './services/products.dao.service';
 import { ChatDaoService } from './services/chat.dao.service';
 
 

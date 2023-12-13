@@ -22,7 +22,7 @@
 //         'thumbnail' in obj
 //     );
 //}
-export class ProductsService {
+export class ProductsServiceObsolete {
     //     path: string;
 
     //     constructor() {
