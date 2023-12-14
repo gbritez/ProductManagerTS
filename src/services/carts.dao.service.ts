@@ -71,12 +71,12 @@ export class CartsService {
         try {
             const cartExists = await this.cartsDao.GetOne(cid)
             if (cartExists) {
-                const response = await this.cartsDao.UpdateOne(cid, { products: { product: pid } }, { new: true })
+                const response = await this.cartsDao.UpdateOne(cid, { $pull: { products: { product: pid } } }, { new: true })
+                console.log(response)
                 return response;
             }
         }
         catch (error) {
-            console.log(error)
             return error;
         }
     }

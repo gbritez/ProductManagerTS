@@ -55,6 +55,7 @@ export class CartsController {
     }
 
     DeleteOne = async (req, res) => {
+        console.log('hit delete one')
         const cid: string = req.params.cid;
         const pid: string = req.params.pid;
         try {
