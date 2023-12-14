@@ -35,8 +35,8 @@ app.use(express.static(__dirname + '/public'))
 app.use(
     session({
         store: new MongoStore({ mongoUrl: process.env.DB_URI }),
-        secret: 'secretSession',
-        cookie: { maxAge: 60000 }
+        secret: process.env.SECRET,
+        cookie: { maxAge: 900000 }
     })
 )
 // passport

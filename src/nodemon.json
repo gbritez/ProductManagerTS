@@ -1,0 +1,7 @@
+{
+  "env": {
+    "NODE_ENV": "development",
+    "DB_URI": "mongodb+srv://gbritez:viuLjEoXqoKUXAqY@dev-coderhouse-ecommerc.38ar6ty.mongodb.net/ecommerce?retryWrites=true&w=majority",
+    "SECRET": "secretSession"
+  }
+}

@@ -72,7 +72,6 @@ export class CartsService {
             const cartExists = await this.cartsDao.GetOne(cid)
             if (cartExists) {
                 const response = await this.cartsDao.UpdateOne(cid, { $pull: { products: { product: pid } } }, { new: true })
-                console.log(response)
                 return response;
             }
         }
