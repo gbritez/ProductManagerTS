@@ -1,4 +1,4 @@
-import { ProductsDao } from '../dao/products.dao';
+import { ProductsDao } from '../dao/mongo/products.dao';
 import { ICustomResponse } from '../helpers/CustomResponse';
 import Product, { IProduct } from '../models/product.model';
 

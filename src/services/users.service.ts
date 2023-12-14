@@ -1,4 +1,4 @@
-import { UsersDao } from "../dao/users.dao";
+import { UsersDao } from "../dao/mongo/users.dao";
 
 export class UsersService {
     usersDao: UsersDao
