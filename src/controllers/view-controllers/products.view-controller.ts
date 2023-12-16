@@ -1,4 +1,5 @@
-import { ICustomResponse } from "../../helpers/CustomResponse";
+
+import { IDTOResponse } from "../../DTO/response.dto";
 import { IProduct } from "../../models/product.model";
 import { ProductsService } from "../../services/products.service";
 
@@ -15,7 +16,7 @@ export class ProductsViewController {
         const { limit = 10, sort, page = 1, ...query } = req.query;
         const user = req.session.user
         try {
-            const response: ICustomResponse = await this.productsService.GetProducts(query, limit, sort, page);
+            const response: IDTOResponse = await this.productsService.GetProducts(query, limit, sort, page);
             res.render('home', { products: response, user })
         }
         catch (error) {

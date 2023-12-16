@@ -1,5 +1,5 @@
-import { ProductsDao } from '../dao/mongo/products.dao';
-import { ICustomResponse } from '../helpers/CustomResponse';
+import { ProductsDao } from '../DAO/mongo/products.dao';
+import { IDTOResponse } from '../DTO/response.dto';
 import Product, { IProduct } from '../models/product.model';
 
 export class ProductsService {
@@ -27,7 +27,7 @@ export class ProductsService {
 
         const status = response ? "success" : "error"
 
-        const result: ICustomResponse = {
+        const result: IDTOResponse = {
             status: status,
             totalPages: response.totalPages,
             prevPage: response.prevPage,

@@ -1,6 +1,6 @@
 
 
-export interface ICustomResponse {
+export interface IDTOResponse {
     status: string,
     totalPages: number,
     prevPage: number,

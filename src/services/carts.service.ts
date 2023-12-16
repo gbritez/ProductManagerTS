@@ -1,5 +1,5 @@
 
-import { CartsDao } from '../dao/mongo/carts.dao'
+import { CartsDao } from '../DAO/mongo/carts.dao'
 import Cart from '../models/cart.model'
 
 export class CartsService {
