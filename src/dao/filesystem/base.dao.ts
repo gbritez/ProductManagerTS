@@ -5,7 +5,6 @@ export class BaseDao {
 
     constructor(path) {
         this.path = path
-        this.path = 'src/productos.json'
         const fileExists = fs.existsSync(this.path)
         if (!fileExists) {
             fs.writeFileSync(this.path, '')
