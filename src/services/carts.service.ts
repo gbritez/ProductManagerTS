@@ -1,79 +1,95 @@
-// import fs from 'fs'
-// import { ICart, ICartProduct } from '../models/cart.model'
 
-export class CartsServiceObsolete {
-    //     path: string;
-    //     constructor() {
-    //         this.path = 'src/carrito.json'
-    //         const fileExists = fs.existsSync(this.path)
-    //         if (!fileExists) {
-    //             fs.writeFileSync(this.path, '')
-    //         }
-    //     }
+import { CartsDao } from '../dao/mongo/carts.dao'
+import Cart from '../models/cart.model'
 
-    //     async CreateCart() {
-    //         let cart: ICart = { id: 1, products: [] };
-    //         let carts: ICart[] = await this.Get()
+export class CartsService {
+    cartsDao: CartsDao
+    constructor() {
+        this.cartsDao = new CartsDao()
+    }
 
-    //         if (carts.length > 0) {
-    //             cart.id = carts[carts.length - 1].id + 1
+    async Create() {
+        const response = await this.cartsDao.CreateOne({ products: [] })
+        return response
+    }
 
-    //         carts = [...carts, cart];
-    //         await fs.promises.writeFile(this.path, JSON.stringify(carts))
-    //     }
+    async Get(id: string) {
+        try {
+            const response = await this.cartsDao.GetOne(id, "products.product")
+            return response
+        }
+        catch (error) {
+            console.log(error)
+            return error
+        }
+    }
 
-    //     async GetCartProducts(id: number) {
-    //         let db = await this.Get()
+    async Update(cid: string, products: string[]) {
+        try {
+            const cart = await this.Get(cid);
 
-    //         let products: ICartProduct[]
+            for (const product of products) {
+                const productInCart = cart.products.find(p => p.product._id.equals(product));
+                if (productInCart) {
+                    productInCart.quantity++;
+                } else {
+                    cart.products.push({ product, quantity: 1 });
+                }
+            }
 
-    //         try {
-    //             const cart: ICart = db.find(x => x.id === id)
-    //             if (cart) {
-    //                 products = cart.products
-    //             }
-    //             else {
-    //                 throw new Error(`No cart found for id: ${id}`)
-    //             }
-    //         }
-    //         catch (error) {
-    //             throw new Error(error)
-    //         }
+            return await cart.save();
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    }
 
-    //         return products;
-    //     }
+    async UpdateProduct(cid: string, pid: string, quantity: number) {
+        const cart = await this.cartsDao.GetOne(cid);
+        try {
+            if (cart) {
+                const productIndex = cart.products.findIndex(x => x.product.toString() === pid);
 
-    //     async UpdateCart(cid: number, pid: number) {
-    //         let db = await this.Get()
+                if (productIndex !== -1) {
+                    cart.products[productIndex].quantity = quantity;
+                } else {
+                    cart.products.push({ product: pid, quantity: quantity });
+                }
 
-    //         try {
-    //             const cart: ICart = db.find(x => x.id === cid)
-    //             if (cart) {
-    //                 let product = cart.products.find(x => x.id === pid)
-    //                 if (product) {
-    //                     cart.products[cart.products.indexOf(product)].quantity++;
-    //                 }
-    //                 else {
-    //                     cart.products.push({ id: pid, quantity: 1 })
-    //                 }
-    //                 await fs.promises.writeFile(this.path, JSON.stringify([...db, cart]))
-    //             }
-    //             else {
-    //                 throw new Error(`Cart with id ${cid} does not exist.`)
-    //             }
-    //         }
-    //         catch (error) {
-    //             throw new Error(error)
-    //         }
-    //     }
+                const response = await cart.save();
+                return response;
+            } else {
+                throw new Error('Cart not found')
+            }
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    }
 
-    //     private async Get() {
-    //         let db = await fs.promises.readFile(this.path, 'utf-8');
-    //         if (db) {
-    //             return JSON.parse(db)
-    //         }
-    //         else {
-    //             return []
-    //         }
-    //     }
+    async DeleteOne(cid: string, pid: string) {
+        try {
+            const cartExists = await this.cartsDao.GetOne(cid)
+            if (cartExists) {
+                const response = await this.cartsDao.UpdateOne(cid, { $pull: { products: { product: pid } } }, { new: true })
+                return response;
+            }
+        }
+        catch (error) {
+            return error;
+        }
+    }
+
+    async DeleteAll(cid: string) {
+        try {
+            const response = await this.cartsDao.UpdateOne(cid, { products: [] })
+            return response;
+        }
+        catch (error) {
+            console.log(error)
+            return error;
+        }
+    }
+
+
 }

@@ -17,7 +17,7 @@ import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access
 
 import { cartsRouter, loginRouter, viewsRouter, productsRouter } from './routes/index';
 
-import { ProductsService } from './services/products.dao.service';
+import { ProductsService } from './services/products.service';
 import { ChatDaoService } from './services/chat.dao.service';
 
 

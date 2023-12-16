@@ -1,6 +1,6 @@
 import { ICustomResponse } from "../../helpers/CustomResponse";
 import { IProduct } from "../../models/product.model";
-import { ProductsService } from "../../services/products.dao.service";
+import { ProductsService } from "../../services/products.service";
 
 import { Request, Response } from 'express'
 export class ProductsViewController {

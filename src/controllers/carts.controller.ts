@@ -1,4 +1,4 @@
-import { CartsService } from "../services/carts.dao.service";
+import { CartsService } from "../services/carts.service";
 
 export class CartsController {
 

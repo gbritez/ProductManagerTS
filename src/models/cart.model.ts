@@ -20,6 +20,6 @@ cartSchema.pre('findOne', function () {
     this.populate('products')
 })
 
-const Cart = model<ICart>("Cart", cartSchema);
+export const Cart = model<ICart>("Cart", cartSchema);
 
 export default Cart;
